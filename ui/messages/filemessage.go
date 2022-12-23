@@ -21,7 +21,9 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"os"
 
+	"github.com/mattn/go-sixel"
 	"maunium.net/go/mautrix/crypto/attachment"
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
@@ -175,7 +177,8 @@ func (msg *FileMessage) CalculateBuffer(prefs config.UserPreferences, width int,
 		debug.Print("Failed to display image:", err)
 		return
 	}
-
+	six, _, _ := image.Decode(bytes.NewReader(msg.imageData))
+	sixel.NewEncoder(os.Stdout).Encode(six)
 	msg.buffer = ansFile.Render()
 }
 
